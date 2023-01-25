@@ -14,8 +14,6 @@ token = 'API TOKEN GOES HERE'
 api_host = 'https://api.eu.kennasecurity.com'
 
 
-
-
 headers = {'content-type': 'application/json', 'X-Risk-Token': token}
 csv_header = ('CVE','MD5','SHA1','SHA256')
 
