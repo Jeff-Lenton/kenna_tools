@@ -9,6 +9,7 @@ filename = (sys.argv[1])
 token = (sys.argv[2])
 
 headers = {'content-type': 'application/json', 'X-Risk-Token': token}
+print (headers)
 
 def add_users(filename, headers):
 
