@@ -1,2 +1,2 @@
 # kenna_tools
-Collection of Kenna scripts...
+Collection of Kenna scripts.
