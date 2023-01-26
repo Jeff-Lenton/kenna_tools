@@ -1,15 +1,20 @@
 import sys
 import requests
 import csv
+import argparse
 
-# Reads a CSV of users with columns 'Email', 'First Name', 'Last Name', 'Phone', 'Roles' and creates users in Kenna
-# Script arguments are CSV filename / path and Kenna API token
+parser = argparse.ArgumentParser( 
+    description="Reads a CSV of users with columns 'Email', 'First Name', 'Last Name', 'Phone', 'Roles' and creates users in Kenna.")
 
-filename = (sys.argv[1])
-token = (sys.argv[2])
+parser.add_argument('-t', action='store', dest='token', required=True, help='Kenna API token - place in single quotes to escape special chars')
+parser.add_argument('-f', action='store', dest='filename', required=True, help='File path to CSV')
+parser.add_argument('-a', action='store', default='api.eu.kennasecurity.com', dest='api_host', required=False, help='Kenna API host. Default - api.eu.kennasecurity.com')
+args = parser.parse_args()
+token = args.token
+filename = args.filename
+api_host = f'https://{args.api_host}'
 
-headers = {'content-type': 'application/json', 'X-Risk-Token': token}
-print (headers)
+headers = {'content-type': 'application/json', 'X-Risk-Token':token}
 
 def add_users(filename, headers):
 
@@ -24,17 +29,15 @@ def add_users(filename, headers):
             phone = (row[3])
             roles = (row[4]).split(",")
 
-            url = "https://api.eu.kennasecurity.com/users"
+            url = f"{api_host}/users"
             payload = {"user": {"firstname": fname, "lastname": lname, "email": email, "roles": roles}}
-
-            print (payload)
-
             commit = requests.request("POST", url, json=payload, headers=headers)
             if commit.status_code == 201:
-                print ('Success')
+                print ('Success - Users added')
             else:
                 print ('Failed')
                 print (commit.status_code)
+                print (commit.text)
 
 if __name__ == '__main__':
     add_users(filename,headers)
