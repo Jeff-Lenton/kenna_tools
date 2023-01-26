@@ -3,19 +3,22 @@ import jsonlines
 import requests
 import time
 import csv
+import argparse
 
-# Reads a Kenna VI+ Snapshot file and creates a csv file of CVE malware hash associations.
+parser = argparse.ArgumentParser( 
+    description="Reads a Kenna VI+ Snapshot file and creates a csv file of CVE to malware hash associations.")
 
-# Path to exported snapshot.jsonl file
-snapshot = 'Snapshot_Download-1667925118040.jsonl' 
-# Kenna api token
-token = 'API TOKEN GOES HERE'
-# Kenna API host
-api_host = 'https://api.eu.kennasecurity.com'
-
-
+parser.add_argument('-t', action='store', dest='token', required=True, help='Kenna API token - place in single quotes to escape special chars')
+parser.add_argument('-f', action='store', dest='snapshot', required=True, help='File path to Snapshot file')
+parser.add_argument('-a', action='store', default='api.eu.kennasecurity.com', dest='api_host', required=False, help='Kenna API host. Default - api.eu.kennasecurity.com')
+args = parser.parse_args()
+token = args.token
+snapshot = args.snapshot
+api_host = f'https://{args.api_host}'
 headers = {'content-type': 'application/json', 'X-Risk-Token': token}
 csv_header = ('CVE','MD5','SHA1','SHA256')
+
+def get_hashes(headers,csv_header,snapshot,api_host)
 
 with open('kenna_malware_hashes.csv', 'w', encoding='UTF8') as r:
 	writer = csv.writer(r)
@@ -40,6 +43,7 @@ with open('kenna_malware_hashes.csv', 'w', encoding='UTF8') as r:
 
 		    	time.sleep(.3)
 
-
+if __name__ == '__main__':
+    get_hashes(headers,csv_header,snapshot,api_host)
 
 
